@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8e7cf0">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="اقساط">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<title>مدیریت اقساط</title>
+
+<style>
+:root{--pr:#8e7cf0;--bg:color-mix(in srgb,var(--pr) 8%,#fff);--card:#fff;--tx:#232842;--mu:#7a8199;--chip:color-mix(in srgb,var(--pr) 12%,#fff);--bd:color-mix(in srgb,var(--pr) 20%,#fff);--ok:#35a672;--bad:#e5535e;--wa:#f0a62b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:color-mix(in srgb,var(--pr) 12%,#10131c);--card:color-mix(in srgb,var(--pr) 9%,#171b27);--tx:#eceffa;--mu:#9aa5c2;--chip:color-mix(in srgb,var(--pr) 20%,#171b27);--bd:color-mix(in srgb,var(--pr) 26%,#171b27);--ok:#5fd0a0;--bad:#ff8088}}
+:root[data-theme="dark"]{--bg:color-mix(in srgb,var(--pr) 12%,#10131c);--card:color-mix(in srgb,var(--pr) 9%,#171b27);--tx:#eceffa;--mu:#9aa5c2;--chip:color-mix(in srgb,var(--pr) 20%,#171b27);--bd:color-mix(in srgb,var(--pr) 26%,#171b27);--ok:#5fd0a0;--bad:#ff8088}
+*{box-sizing:border-box}html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.6;padding-bottom:84px}
+.w{max-width:820px;margin:auto;padding:12px}
+button{font-family:inherit;cursor:pointer;border:0;border-radius:12px;color:var(--tx)}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 12px;position:relative}
+h1{font-size:20px;margin:0;font-weight:800;white-space:nowrap;display:flex;align-items:center;gap:9px}.logo{width:34px;height:34px;flex:none;filter:drop-shadow(0 2px 4px #0002)}
+.inst{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));inset-inline:10px;max-width:520px;margin:auto;background:var(--card);border:1px solid var(--bd);border-radius:18px;box-shadow:0 12px 32px #0004;padding:10px 12px;display:none;align-items:center;gap:10px;z-index:30;font-size:13px}.inst.s{display:flex;animation:dn .4s ease}.inst img{width:42px;height:42px;border-radius:11px;flex:none}.inst span{flex:1;line-height:1.5}.inst .go{background:var(--pr);color:#fff;padding:8px 18px;font-size:14px;font-weight:700}.inst .x{background:transparent;color:var(--mu);padding:4px 8px;font-size:16px}@keyframes dn{from{transform:translateY(-40px);opacity:0}to{transform:none;opacity:1}}
+.hd{display:flex;gap:6px}
+.ib{background:var(--card);border:1px solid var(--bd);width:38px;height:38px;font-size:16px;padding:0}
+.pal{display:none;position:absolute;top:46px;inset-inline-end:0;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:10px;grid-template-columns:repeat(5,1fr);gap:9px;z-index:5;box-shadow:0 8px 24px #0002}
+.pal.s{display:grid}.pal i{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid var(--card);box-shadow:0 0 0 2px transparent}.pal i.a{box-shadow:0 0 0 2px var(--tx)}
+.hero{background:linear-gradient(135deg,var(--pr),color-mix(in srgb,var(--pr) 45%,#ffa6c9));color:#fff;border-radius:22px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:10px;box-shadow:0 10px 24px color-mix(in srgb,var(--pr) 30%,transparent)}
+.rw{position:relative;width:80px;height:80px;flex:none}.rw svg{width:100%;height:100%}.rw span{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:15px}
+.ht small{opacity:.9;font-size:12.5px;display:block}.ht b{font-size:28px;font-weight:800;line-height:1.3;display:block}.ht b i{font-size:13px;font-style:normal;font-weight:600;opacity:.9}.ht em{font-style:normal;font-size:12px;opacity:.92}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.m{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:9px 12px}
+.m small{color:var(--mu);font-size:12px;display:block}.m b{font-size:16px;font-weight:800;display:block;line-height:1.5}.m i{display:block;font-style:normal;font-size:11px;color:var(--mu)}
+.m .mb{background:var(--chip);padding:1px 9px;font-size:11px;border-radius:9px;margin-top:3px}
+.bad{color:var(--bad)}.ok{color:var(--ok)}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:12px;margin-bottom:10px}
+.sh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 8px}
+.sh h2{font-size:15px;margin:0;white-space:nowrap}.sh .r{display:flex;gap:6px;align-items:center}
+.sh button,.sh select{background:var(--chip);padding:5px 10px;font-size:12px;border-radius:10px;font-family:inherit;color:var(--tx);border:0}
+.sh button.on{background:var(--pr);color:#fff}
+.up{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--bd)}.up:first-of-type{border-top:0}
+.db{width:46px;flex:none;text-align:center;background:var(--chip);border-radius:12px;padding:2px 0;font-size:10.5px;color:var(--mu);line-height:1.3}.db b{display:block;font-size:17px;color:var(--tx)}
+.up.o .db{background:color-mix(in srgb,var(--bad) 18%,var(--card))}
+.ui{flex:1;min-width:0}.ui b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ui small{color:var(--mu);font-size:11.5px}
+.ua{text-align:end;font-size:12.5px}.ua b{display:block;font-size:13.5px}
+.pb2{width:34px;height:34px;border-radius:50%;background:color-mix(in srgb,var(--ok) 20%,var(--card));color:var(--ok);font-size:16px;font-weight:800;padding:0;flex:none}
+.bars{display:flex;gap:5px;align-items:flex-end;height:100px;overflow-x:auto}
+.bc{flex:1;min-width:40px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:10px;color:var(--mu);text-align:center}
+.bar{width:100%;max-width:32px;background:var(--chip);border-radius:7px 7px 0 0;position:relative;overflow:hidden;min-height:2px}
+.bar span{position:absolute;bottom:0;left:0;right:0;background:var(--ok)}
+.bc.now .bar{outline:2px solid var(--pr)}.bc b{color:var(--tx);font-size:10px}
+.lg{font-size:11px;color:var(--mu);margin-top:6px}
+.tw{overflow-x:auto;border-radius:12px}
+table{border-collapse:separate;border-spacing:2px}th,td{padding:0;text-align:center}
+.yr{font-size:11px;color:var(--pr);font-weight:800;background:var(--chip);border-radius:6px}
+.mh{cursor:pointer}.mh span{writing-mode:vertical-rl;font-size:10.5px;color:var(--mu);font-weight:600;display:block;padding:2px 0}
+.mh.cur span{color:var(--pr);font-weight:800}.mh.sel span{background:var(--pr);color:#fff;border-radius:6px}
+.nm{position:sticky;inset-inline-start:0;background:var(--card);z-index:2;min-width:128px;max-width:150px;text-align:start;padding:2px 4px;border-radius:8px}
+.nc{display:flex;align-items:center;gap:4px}.nt{min-width:0;flex:1;cursor:pointer}
+.nm b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nm small{display:block;font-size:10.5px;color:var(--mu);white-space:nowrap}
+.hdl{touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;color:var(--mu);font-size:18px;line-height:1;padding:6px 3px;border-radius:8px;flex:none}
+.hdl:active{background:var(--chip)}
+tr.drag .nm,.cd.drag{box-shadow:0 6px 18px #0003;background:var(--chip)}
+.cl{width:27px;height:27px;border-radius:8px;background:var(--chip);font-size:14px;padding:0;position:relative;color:var(--ok);font-weight:800}
+.cl .dy{font-size:10.5px;font-weight:600;color:var(--tx)}
+.cl.p{background:color-mix(in srgb,var(--ok) 24%,var(--card))}.cl.p::after{content:"✓";position:absolute;top:-3px;inset-inline-end:0;font-size:10px;color:var(--ok);font-weight:800}
+.cl.o{background:color-mix(in srgb,var(--bad) 22%,var(--card));box-shadow:inset 0 0 0 2px var(--bad)}
+.cl.h{background:linear-gradient(to top,color-mix(in srgb,var(--ok) 40%,var(--card)) var(--f),var(--chip) var(--f))}
+.cl.fe{outline:2px solid var(--wa);outline-offset:-2px}.cl.fe::before{content:"★";position:absolute;top:-5px;inset-inline-start:-2px;font-size:12px;color:var(--wa);line-height:1}
+.tf td{font-size:9.5px;color:var(--mu);padding-top:3px}
+.mp{background:var(--chip);border-radius:14px;padding:8px 10px;margin-bottom:8px}
+.mp .mt{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:13px;margin-bottom:4px}.mp .mt button{background:var(--card);padding:2px 9px;font-size:12px}
+.mr{display:grid;grid-template-columns:1fr auto 84px auto;gap:6px;align-items:center;padding:4px 0;border-top:1px solid var(--bd);font-size:12.5px}.mr small{color:var(--mu)}
+.mr input{width:100%;font-family:inherit;padding:5px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:13px}
+.mr button,.mpa{background:var(--pr);color:#fff;padding:4px 9px;font-size:12px}
+.cd{border:1px solid var(--bd);border-radius:14px;padding:8px 10px;margin-bottom:6px;background:var(--card)}
+.lh{display:flex;justify-content:space-between;gap:8px;align-items:center}.lh .t{flex:1;min-width:0;cursor:pointer}
+.lh b{font-size:14px}.lh small{color:var(--mu);font-size:11.5px;display:block}
+.pg{height:5px;background:var(--chip);border-radius:9px;overflow:hidden;margin:5px 0}.pg div{height:100%;background:var(--ok)}
+.chips{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:6px}
+.ch{background:var(--chip);padding:4px 0;font-size:11.5px;line-height:1.25;border:2px solid transparent}.ch small{display:block;font-size:9.5px;color:var(--mu)}
+.ch.fe{box-shadow:inset 0 0 0 2px var(--wa)}.ch.h{background:color-mix(in srgb,var(--ok) 14%,var(--card))}
+.ch.p{background:color-mix(in srgb,var(--ok) 24%,var(--card));border-color:var(--ok)}.ch.o{background:color-mix(in srgb,var(--bad) 28%,var(--card));border-color:var(--bad)}
+.ed{background:var(--chip);padding:5px 12px;font-size:12px;margin-top:6px}
+.bdg{background:var(--bad);color:#fff;border-radius:8px;font-size:10px;padding:0 6px;font-weight:600}
+details>summary{cursor:pointer;font-size:14px;font-weight:600;list-style:none}details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"◂ ";color:var(--mu)}details[open]>summary::before{content:"▾ "}
+.fx{font-size:11.5px;color:var(--mu);margin:6px 0}
+.fr{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid var(--bd);font-size:12.5px}.fr.z{opacity:.5;text-decoration:line-through}
+.fl2{font-size:13px;font-weight:600;margin-top:8px}
+.empty{text-align:center;color:var(--mu);padding:26px 10px}
+.fab{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));inset-inline-start:16px;background:var(--pr);color:#fff;padding:13px 20px;border-radius:30px;font-size:15px;font-weight:700;box-shadow:0 8px 20px color-mix(in srgb,var(--pr) 45%,transparent);z-index:6}
+.tt{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:8px 14px;border-radius:12px;font-size:13px;display:none;gap:12px;align-items:center;z-index:20;max-width:92vw}
+.tt button{background:var(--pr);color:#fff;padding:3px 10px;font-size:12px}.tt.big{width:min(92vw,440px);padding:14px 16px;font-size:15px;justify-content:space-between;border-radius:16px;box-shadow:0 10px 30px #0006;bottom:calc(90px + env(safe-area-inset-bottom,0px))}.tt.big button{padding:11px 24px;font-size:16px;font-weight:800;border-radius:12px;background:var(--wa);color:#222}
+.ov{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:14px;z-index:9}.ov.s{display:flex}
+.md{background:var(--card);border-radius:18px;padding:16px;width:100%;max-width:440px;max-height:92vh;overflow:auto}
+.md label{display:block;font-size:12.5px;color:var(--mu);margin:7px 0 2px}
+.md input,.md select,.md textarea{width:100%;font-family:inherit;font-size:15px;padding:9px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ck{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:13px}.ck input{width:auto}
+.rs{background:var(--chip);border-radius:12px;padding:8px 10px;margin-top:8px;font-size:12.5px}
+.ac{display:flex;gap:8px;margin-top:12px}.ac button{background:var(--chip);padding:10px 14px;font-size:14px}.ac #sv{background:var(--pr);color:#fff;flex:1;font-weight:600}
+.fmts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fmts button{background:var(--chip);padding:11px 6px;font-size:14px;line-height:1.5}.fmts small{display:block;font-size:10.5px;color:var(--mu)}
+[data-cp]{cursor:pointer}
+</style>
+</head>
+<body>
+<div class="w">
+<header><h1><svg class="logo" viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8e7cf0"/><stop offset="1" stop-color="#f08ab4"/></linearGradient></defs><rect width="512" height="512" rx="112" fill="url(#lg)"/><g transform="translate(256 256) scale(1) translate(-256 -256)"><circle cx="400" cy="120" r="150" fill="#fff" opacity=".10"/><g transform="translate(236 246) rotate(-9)"><rect x="-128" y="-84" width="256" height="170" rx="26" fill="#fff" opacity=".42" transform="translate(-26 -30)"/><rect x="-128" y="-84" width="256" height="170" rx="26" fill="#fff"/><rect x="-128" y="-44" width="256" height="34" fill="#8e7cf0" opacity=".28"/><rect x="-102" y="20" width="54" height="40" rx="9" fill="#f2b84a"/><rect x="-30" y="30" width="108" height="11" rx="5.5" fill="#8e7cf0" opacity=".38"/><rect x="-30" y="50" width="62" height="11" rx="5.5" fill="#8e7cf0" opacity=".22"/></g><circle cx="372" cy="376" r="68" fill="#35a672" stroke="#fff" stroke-width="12"/><path d="M341 377 l23 23 l45 -50" fill="none" stroke="#fff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/></g></svg><span>مدیریت اقساط</span></h1><div class="hd"><button class="ib" id="bk" title="ذخیره / یادآور">💾</button><button class="ib" id="pl" title="رنگ تم">🎨</button><button class="ib" id="th" title="روشن / تاریک">🌓</button></div><div class="pal" id="pal"></div></header>
+<div class="hero" id="hero"></div>
+<div class="tiles" id="tiles"></div>
+<details class="c" id="upd" open><summary>📅 سررسیدهای پیش‌رو <span id="upn" style="font-weight:400;color:var(--mu);font-size:12px"></span></summary><div id="up" style="margin-top:6px"></div></details>
+<div class="c"><div class="sh"><h2 id="vt">🗂 وام‌ها</h2><div class="r"><select id="srt"><option value="">⇅ مرتب‌سازی</option><option value="day">بر اساس روز سررسید</option><option value="rem">بیشترین مانده</option><option value="start">قدیمی‌ترین شروع</option><option value="name">بر اساس نام</option></select><button id="vw">نمای کارتی</button></div></div><div id="main"></div></div>
+<details class="c" id="feed"><summary>🏷 کارمزد سالانه <span id="feh" style="font-weight:400;color:var(--mu);font-size:12px"></span></summary><p class="fx">هر سال ۱۲ ماه است: ۱۱ ماه قسط اصل و ۱ ماه (ماه اول هر سال: ماه ۱، ۱۳، ۲۵ و …) فقط کارمزد. کارمزد هر سال = مانده وام در ابتدای آن سال × نرخ کارمزد ÷ ۱۰۰ × ۱۲ ÷ (تعداد اقساط همان سال). در جدول با ★ و حلقه نارنجی نشان داده می‌شود.</p><div id="ann"></div></details>
+<details class="c" id="tools"><summary>🛠 بک‌آپ و بازیابی</summary>
+<div style="text-align:center;margin-top:10px"><button id="bk2" style="background:var(--pr);color:#fff;padding:9px 16px;font-size:13px;margin-bottom:8px">💾 ذخیره بک‌آپ / یادآور تقویم</button><br><button id="instBtn" style="background:var(--chip);padding:9px 16px;font-size:13px;margin-bottom:8px">📲 نصب روی گوشی / بررسی نصب</button><div id="diag" class="fx" style="text-align:start;line-height:1.9"></div>
+<label style="position:relative;display:inline-block;background:var(--chip);padding:9px 18px;border-radius:12px;font-size:13px;cursor:pointer;overflow:hidden">📂 بازیابی از فایل بک‌آپ<input type="file" id="fl" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:200px"></label></div>
+<details style="margin-top:10px"><summary style="font-size:12.5px;color:var(--mu);font-weight:400">اگر انتخاب فایل باز نشد: بازیابی با چسباندن متن</summary>
+<textarea id="pt" dir="ltr" rows="4" placeholder="متن بک‌آپ (محتوای فایل HTML یا JSON) را اینجا بچسبان" style="width:100%;margin-top:8px;font-size:12px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);padding:8px"></textarea>
+<div class="ac"><button id="pb" style="background:var(--pr);color:#fff;flex:1">بازیابی از متن</button><button id="pc2">نمایش متن بک‌آپ فعلی</button></div></details>
+<details style="margin-top:8px"><summary style="font-size:12.5px;color:var(--mu);font-weight:400">🕘 نسخه‌های خودکار همین دستگاه (برای برگشتن از اشتباه)</summary><div id="sn" class="fx"></div></details>
+</details>
+</div>
+
+<div class="inst" id="inst"><img src="icon-192.png" alt=""><span id="instT"></span><button class="go" id="instGo">نصب</button><button class="x" id="instX" aria-label="بستن">✕</button></div>
+<button class="fab" id="add">＋ قسط جدید</button>
+<div class="tt" id="tt"></div>
+<div class="ov" id="ov3"><div class="md">
+<h3 style="margin:0 0 4px">💾 ذخیره بک‌آپ</h3>
+<p class="fx">در چه قالبی ذخیره کنم؟ (بعد از انتخاب، خود دستگاه محل ذخیره را می‌پرسد)</p>
+<div class="fmts"><button data-bf="html">🌐 وب (HTML)<small>قابل مشاهده + بازیابی</small></button><button data-bf="csv">📄 CSV<small>فقط برای اکسل</small></button><button data-bf="json">🧾 JSON<small>فقط بازیابی</small></button><button data-bf="ics">📅 یادآور تقویم<small>فایل ICS برای گوشی</small></button><button data-bf="copy">📋 کپی متن<small>برای یادداشت</small></button></div>
+<div class="ac"><button id="cx3">بستن</button></div>
+</div></div>
+<div class="ov" id="ov"><div class="md">
+<h3 id="mt" style="margin:0 0 4px">قسط جدید</h3>
+<label>نام قسط (مثلاً وام خودرو)</label><input id="f_n">
+<label>بانک</label><input id="f_b">
+<label>شماره کارت (اختیاری)</label><input id="f_k" inputmode="numeric" placeholder="۶۰۳۷ ۹۹۷۳ ۰۰۰۰ ۰۰۰۰" maxlength="24">
+<div id="pm">
+<div class="r2"><div><label>مبلغ هر قسط (تومان)</label><input id="f_a" inputmode="numeric"></div><div><label>تعداد کل ماه‌ها</label><input id="f_c" inputmode="numeric"></div></div>
+<div class="ck"><input type="checkbox" id="f_q"><label for="f_q" style="margin:0">ماه اول هر سال فقط کارمزد (۱۱ ماه قسط + ۱ ماه کارمزد)</label></div>
+<div id="fq" style="display:none"><div class="r2"><div><label>مبلغ کل وام (تومان)</label><input id="f_P" inputmode="numeric"></div><div><label>نرخ کارمزد سالانه (٪)</label><input id="f_fp" inputmode="decimal" placeholder="مثلاً ۴"></div></div><label>یا مبلغ ثابت کارمزد هر سال (اختیاری)</label><input id="f_s" inputmode="numeric"><div class="rs" id="fprev"></div></div>
+</div>
+<div class="r2"><div><label>سررسید (روز ماه)</label><input id="f_d" inputmode="numeric" placeholder="۱ تا ۳۱"></div><div id="pw"><label>چند ماه تا الان پرداخت شده؟</label><input id="f_p" inputmode="numeric" value="0"></div></div>
+<label>تاریخ شروع (ماه و سال اولین ماه)</label>
+<div class="r2"><select id="f_m"></select><select id="f_y"></select></div>
+<div class="ac"><button id="sv">ذخیره</button><button id="dl" style="display:none">🗑 حذف</button><button id="cx">بستن</button></div>
+</div></div>
+<div class="ov" id="ov2"><div class="md">
+<h3 style="margin:0 0 6px">⏰ جریمه تاخیر</h3>
+<div class="ck"><input type="checkbox" id="f_late"><label for="f_late" style="margin:0">محاسبه جریمه تاخیر فعال باشد</label></div>
+<label>نرخ جریمه سالانه (٪) — عدد نمونه است، طبق قرارداد بانکت تنظیم کن</label><input id="f_lr" inputmode="decimal">
+<p class="fx" style="margin-top:8px">جریمه هر قسط معوق = مانده قسط × نرخ سالانه × (روزهای تاخیر ÷ ۳۶۵). روزها تقریبی شمرده می‌شود.</p>
+<div class="ac"><button id="sv2">ذخیره</button></div>
+</div></div>
+
+<script>
+const MN=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const D='۰۱۲۳۴۵۶۷۸۹';
+const fd=s=>String(s).replace(/\d/g,x=>D[x]);
+const fm=n=>Math.round(n).toLocaleString('fa-IR');
+const fm1=n=>fd((n/1e6).toFixed(1)).replace('.','٫');
+const lat=s=>String(s).replace(/[۰-۹]/g,c=>D.indexOf(c)).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/[٫,،]/g,'.');
+const num=s=>parseInt(lat(s).replace(/[^\d]/g,''))||0;
+const pf=s=>parseFloat(lat(s))||0;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+function today(){try{const p=new Intl.DateTimeFormat('en-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date());const g=t=>parseInt(p.find(x=>x.type===t).value);const r={y:g('year'),m:g('month'),d:g('day')};if(r.y>1300&&r.m)return r}catch(e){}const n=new Date();return{y:n.getFullYear()-621,m:n.getMonth()+1,d:n.getDate()}}
+const T=today(),NK=T.y*12+T.m-1;
+const CUM=[0,31,62,93,124,155,186,216,246,276,306,336];
+const dn=(y,m,d)=>y*365+CUM[m-1]+d;
+const lab=k=>({m:MN[k%12],y:Math.floor(k/12)});
+const PAL=[['بنفشه','#8e7cf0'],['صورتی','#ee7fa8'],['هلویی','#f2946b'],['عسلی','#dba52f'],['نعنایی','#4cc0a0'],['سبز','#7bbf6a'],['آسمانی','#5aaaf0'],['فیروزه','#3fbfcf'],['یاسی','#b07ce0'],['مرجانی','#f06f7b']];
+let upAll=false,loans=[],armed=false,editId=null,view='mx',pi=0,first=true,selK=null,ch='m',S={late:false,lr:26},V=[];const ex=new Set();
+const st=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const ld=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const sv=()=>{st('aghsat',JSON.stringify(loans));snap()};
+const msg=(t,u)=>{const e=$('tt');e.className='tt'+(u?' big':'');e.innerHTML='';const s=document.createElement('span');s.textContent=t;e.appendChild(s);if(u){const b=document.createElement('button');b.textContent='برگرداندن';b.onclick=()=>{u();e.style.display='none'};e.appendChild(b)}e.style.display='flex';clearTimeout(msg.h);msg.h=setTimeout(()=>e.style.display='none',u?9000:2800)};
+try{loans=JSON.parse(ld('aghsat')||'[]')}catch(e){}
+try{S=Object.assign(S,JSON.parse(ld('aghsat_set')||'{}'))}catch(e){}
+function mig(l){if(!l.due&&l.paid){const n=l.paid.length;l.due=Array(n).fill(l.amount);l.pay=l.paid.map(p=>p?l.amount:0);delete l.paid;l.cfg=l.cfg||{tab:'m',amt:l.amount,n,q:0,fee:0}}
+if(Array.isArray(l.due)&&!Array.isArray(l.pay))l.pay=l.due.map(()=>0);
+if(!Array.isArray(l.due)||!Array.isArray(l.pay)||typeof l.sk!=='number')throw 0;
+if(l.id===undefined)l.id=Date.now()+Math.random();if(!l.cfg)l.cfg={tab:'m',amt:l.due[1]||l.due[0]||0,n:l.due.length,q:0,fee:0};if(!l.day)l.day=1;l.name=l.name||'وام'}
+try{loans.forEach(mig)}catch(e){loans=[]}
+view=ld('aghsat_view')||'mx';pi=+(ld('aghsat_pal')||0)||0;
+const R=document.documentElement;
+const t0=ld('aghsat_theme');if(t0)R.dataset.theme=t0;
+function applyPal(){R.style.setProperty('--pr',PAL[pi][1]);$('pal').innerHTML=PAL.map((p,i)=>`<i title="${p[0]}" data-p="${i}" style="background:${p[1]}" class="${i===pi?'a':''}"></i>`).join('')}
+$('th').onclick=()=>{const dark=R.dataset.theme?R.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;R.dataset.theme=dark?'light':'dark';st('aghsat_theme',R.dataset.theme)};
+$('pl').onclick=e=>{e.stopPropagation();$('pal').classList.toggle('s')};
+$('pal').onclick=e=>{const i=e.target.dataset.p;if(i===undefined)return;pi=+i;st('aghsat_pal',pi);applyPal()};
+$('vw').onclick=()=>{view=view==='mx'?'cd':'mx';st('aghsat_view',view);render()};
+const L=l=>l.due.length;
+const doneAll=l=>l.pay.every((p,i)=>p>=l.due[i]);
+const remOf=(l,i)=>l.due[i]-Math.min(l.pay[i],l.due[i]);
+const remAll=l=>l.due.reduce((a,d,i)=>a+d-Math.min(l.pay[i],d),0);
+function vis(){let c=0;loans.forEach(l=>{if(doneAll(l)){if(l.doneK===undefined){l.doneK=NK;c=1}}else if(l.doneK!==undefined){delete l.doneK;c=1}});if(c)sv();return loans.filter(l=>l.doneK===undefined||NK-l.doneK<3).sort((a,b)=>(a.doneK!==undefined)-(b.doneK!==undefined))}
+const fq=l=>l.cfg.tab==='m'?!!l.cfg.q:l.cfg.ty==='q';
+const isFee=(l,i)=>fq(l)&&i%12===0;
+const late=(l,i)=>{const k=l.sk+i;return l.pay[i]<l.due[i]&&(k<NK||(k===NK&&l.day<T.d))};
+const pen=(l,i)=>{if(!S.late||!late(l,i))return 0;const k=l.sk+i,days=Math.max(0,dn(T.y,T.m,T.d)-dn(Math.floor(k/12),k%12+1,l.day));return remOf(l,i)*S.lr/100*days/365};
+function buildDue(c){if(c.n<1)return[];
+if(!c.q||!(c.P&&c.rate))return Array.from({length:c.n},(_,i)=>c.q&&i%12===0?c.fee:c.amt);
+const out=[];let bal=c.P;
+for(let y=0;y*12<c.n;y++){const k=Math.min(12,c.n-y*12)-1;out.push(Math.round(bal*c.rate/100*(k>0?12/k:1)));for(let j=0;j<k;j++){out.push(c.amt);bal=Math.max(0,bal-c.amt)}}
+return out}
+function cfgForm(){const q=$('f_q').checked?1:0,n=num($('f_c').value),P=q?num($('f_P').value):0,rate=q?pf($('f_fp').value):0;let amt=num($('f_a').value);
+if(!amt&&P&&n)amt=Math.round(P/Math.max(1,n-Math.ceil(n/12)));
+return{tab:'m',amt,n,q,fee:q?num($('f_s').value):0,P,rate}}
+function fprev(){const c=cfgForm(),el=$('fprev');if(!el||!c.q)return;
+if(!c.P||!c.rate){el.innerHTML=c.fee?'کارمزد ثابت هر سال: '+fm(c.fee)+' ت':'مبلغ کل وام و نرخ کارمزد را بنویس تا کارمزد هر سال خودکار محاسبه شود.';return}
+const f=buildDue(c).filter((x,i)=>i%12===0);el.innerHTML=f.map((x,i)=>'سال '+fd(i+1)+': <b>'+fm(x)+'</b>').join(' ، ')+' (تومان)<br>جمع کارمزد: <b>'+fm(f.reduce((a,b)=>a+b,0))+' ت</b>'}
+const cardF=s=>lat(s).replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim();
+function mpanel(){if(selK===null)return '';let t=0,pd=0;const rows=[];
+V.forEach(l=>{const i=selK-l.sk;if(i<0||i>=L(l))return;const d=l.due[i],p=Math.min(l.pay[i],d);t+=d;pd+=p;rows.push(`<div class="mr"><span><b>${esc(l.name)}</b> <small>${isFee(l,i)?'کارمزد سالانه':'قسط'} · روز ${fd(l.day)}</small>${l.card?`<br><small data-cp="${l.card}">💳 ${fd(cardF(l.card))}</small>`:''}</span><span>${fm(d)}</span><input inputmode="numeric" value="${p?fd(p):''}" placeholder="پرداختی" data-pi="${l.id}:${i}"><button data-pf="${l.id}:${i}">کامل</button></div>`)});
+const b=lab(selK);
+return `<div class="mp"><div class="mt"><span><b>${b.m} ${fd(b.y)}</b> · جمع: <b>${fm(t)} ت</b> · پرداخت‌شده: ${fm(pd)} · مانده: <b class="${t-pd?'bad':'ok'}">${fm(t-pd)}</b></span><span style="display:flex;gap:6px">${t-pd?'<button class="mpa" data-pa="1">همه پرداخت شد</button>':''}<button data-cm="1">✕</button></span></div>${rows.join('')||'<div class="lg">قسطی در این ماه نیست.</div>'}</div>`}
+function matrix(){
+const lo=Math.min(...V.map(l=>l.sk)),hi=Math.max(...V.map(l=>l.sk+L(l)-1));
+const ks=[];for(let k=lo;k<=hi;k++)ks.push(k);
+const ys=[];ks.forEach(k=>{const y=Math.floor(k/12);ys.length&&ys[ys.length-1][0]===y?ys[ys.length-1][1]++:ys.push([y,1])});
+const tot=ks.map(k=>V.reduce((s,l)=>{const i=k-l.sk;return s+(i>=0&&i<L(l)?l.due[i]:0)},0));
+return mpanel()+`<div class="tw" id="tw"><table><tr><th class="nm" rowspan="2"></th>${ys.map(y=>`<th class="yr" colspan="${y[1]}">${fd(y[0])}</th>`).join('')}</tr>
+<tr>${ks.map(k=>`<th class="mh ${k===NK?'cur':''} ${k===selK?'sel':''}" data-mk="${k}" ${k===NK?'id="cur"':''}><span>${MN[k%12]}</span></th>`).join('')}</tr>
+${V.map(l=>{const n=l.pay.filter((p,i)=>p>=l.due[i]).length;return `<tr data-rid="${l.id}"><th class="nm"><div class="nc"><span class="hdl" title="بکش تا جابه‌جا شود">⠿</span><div class="nt" data-e="${l.id}"><b>${esc(l.name)}</b><small>${esc(l.bank||'—')} · ${fd(n)}/${fd(L(l))}</small></div></div></th>${ks.map(k=>{const i=k-l.sk;if(i<0||i>=L(l))return '<td></td>';const p=l.pay[i],d=l.due[i],full=p>=d,part=p>0&&!full,fe=isFee(l,i);return `<td><button class="cl ${late(l,i)?'o':''} ${part?'h':''} ${full?'p':''} ${fe?'fe':''}" ${part?`style="--f:${Math.round(p/d*100)}%"`:''} data-t="${l.id}:${i}" title="${MN[k%12]} ${fd(Math.floor(k/12))} · ${fe?'کارمزد سالانه':'قسط'} ${fm(d)} ت"><span class="dy">${fd(l.day)}</span></button></td>`}).join('')}</tr>`}).join('')}
+<tr class="tf"><th class="nm"><small>جمع ماه (میلیون)</small></th>${tot.map(t=>`<td>${t?fm1(t):''}</td>`).join('')}</tr></table></div>
+<div class="lg">روی خانه بزن تا تیک بخورد · روی نام ماه بزن تا جمع و پرداخت ناقص همان ماه باز شود · ⠿ را بکش تا جای وام عوض شود · عدد داخل خانه = روز سررسید · ★ = ماه کارمزد · قرمز = معوق</div>`}
+function cards(){return V.map(l=>{
+const len=L(l),n=l.pay.filter((p,i)=>p>=l.due[i]).length,op=ex.has(l.id),od=l.pay.filter((p,i)=>late(l,i)).length;
+return `<div class="cd" data-rid="${l.id}"><div class="lh"><span class="hdl" title="بکش تا جابه‌جا شود">⠿</span><div class="t" data-o="${l.id}"><b>${op?'▾':'▸'} ${esc(l.name)} ${od?`<span class="bdg">${fd(od)} معوق</span>`:''}</b><small>🏦 ${esc(l.bank||'—')} · روز ${fd(l.day)} · شروع ${lab(l.sk).m} ${fd(lab(l.sk).y)} · ${fd(n)} از ${fd(len)}</small></div><b style="color:var(--pr)">${fm(l.cfg.amt||l.due[1]||l.due[0])} ت</b></div><div class="pg"><div style="width:${n/len*100}%"></div></div>
+${op?`${l.card?`<div class="lg" data-cp="${l.card}">💳 ${fd(cardF(l.card))} (برای کپی بزن)</div>`:''}<div class="chips">${l.due.map((d,i)=>{const b=lab(l.sk+i),p=l.pay[i];return `<button class="ch ${late(l,i)?'o':''} ${p>0&&p<d?'h':''} ${p>=d?'p':''} ${isFee(l,i)?'fe':''}" data-t="${l.id}:${i}">${p>=d?'✓ ':''}${isFee(l,i)?'★ ':''}${b.m}<small>${fd(b.y)}</small></button>`}).join('')}</div><button class="ed" data-e="${l.id}">✏️ ویرایش / حذف</button>`:''}</div>`}).join('')}
+function render(){
+const tw0=$('tw'),sl=tw0?tw0.scrollLeft:0,sy=window.scrollY;V=vis();
+let due=0,duePaid=0,debt=0,over=0,overN=0,paidAll=0,all=0,pn=0,endK=-1;const items=[],byK={};
+loans.forEach(l=>l.due.forEach((d,i)=>{const k=l.sk+i,p=Math.min(l.pay[i],d),rem=d-p;all+=d;paidAll+=p;debt+=rem;
+if(k===NK){due+=d;duePaid+=p}
+if(rem>0){endK=Math.max(endK,k);byK[k]=(byK[k]||0)+rem;const ov=late(l,i);if(ov){over+=rem;overN++;pn+=pen(l,i)}items.push({l,i,k,rem,ov,dd:dn(Math.floor(k/12),k%12+1,l.day)-dn(T.y,T.m,T.d)})}
+}));
+const pct=due?Math.round(duePaid/due*100):100;
+$('hero').innerHTML=`<div class="rw"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9155" fill="none" stroke="#ffffff40" stroke-width="3.2"/>${pct>0?`<circle cx="18" cy="18" r="15.9155" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="${pct} 100" transform="rotate(-90 18 18)"/>`:''}</svg><span>${fd(pct)}٪</span></div><div class="ht"><small>قسط این ماه · ${MN[T.m-1]} ${fd(T.y)}</small><b>${fm(due)}<i> تومان</i></b><em>${due?`پرداخت‌شده ${fm(duePaid)} · مانده ${fm(due-duePaid)}`:'این ماه قسطی نداری 🎉'}</em></div>`;
+const mi=(a,b,c,cl='',x='')=>`<div class="m"><small>${a}</small><b class="${cl}">${b}</b><i>${c}</i>${x}</div>`;
+$('tiles').innerHTML=mi('💸 کل بدهی باقی‌مانده',fm(debt)+' ت',fd(items.length)+' پرداخت مانده')+
+mi('⚠️ عقب‌افتاده',fm(over)+' ت',overN?fd(overN)+' قسط معوق'+(S.late?' · جریمه '+fm(pn)+' ت':''):'همه‌چی به‌روزه 👌',over?'bad':'ok',`<button class="mb" data-set="1">⏰ جریمه تاخیر: ${S.late?'روشن':'خاموش'}</button>`)+
+mi('✅ پرداخت‌شده',fm(paidAll)+' ت',all?fd(Math.round(paidAll/all*100))+'٪ از کل '+fm(all):'—','ok')+
+mi('🏁 پایان همه اقساط',endK<0?(loans.length?'بدون بدهی 🎉':'—'):lab(endK).m+' '+fd(lab(endK).y),endK<0?'':fd(Math.max(0,endK-NK))+' ماه دیگر');
+items.sort((a,b)=>a.dd-b.dd);
+$('upn').textContent=items.length?'· '+(overN?fd(overN)+' معوق · ':'')+fd(items.length)+' مورد':'';
+$('up').innerHTML=items.length?items.slice(0,upAll?999:6).map(x=>{const b=lab(x.k),st2=x.dd<0?`<span class="bad">${fd(-x.dd)} روز تاخیر</span>`:x.dd===0?'<b>امروز</b>':fd(x.dd)+' روز دیگر';
+return `<div class="up ${x.ov?'o':''}"><div class="db"><b>${fd(x.l.day)}</b>${b.m}</div><div class="ui"><b>${esc(x.l.name)}</b><small>${isFee(x.l,x.i)?'★ کارمزد سالانه':'قسط'} · ${esc(x.l.bank||'')}</small></div><div class="ua"><b>${fm(x.rem)}</b>${st2}</div><button class="pb2" data-t="${x.l.id}:${x.i}" title="پرداخت شد">✓</button></div>`}).join('')+(items.length>6?`<div style="text-align:center;margin-top:6px"><button class="ed" data-upall="1">${upAll?'نمایش کمتر':'نمایش همه ('+fd(items.length)+')'}</button></div>`:''):'<div class="empty">'+(loans.length?'همه اقساط پرداخت شده 🎉':'هنوز قسطی ثبت نکردی. با دکمه «قسط جدید» شروع کن 🙂')+'</div>';
+$('vw').textContent=view==='mx'?'نمای کارتی':'نمای جدولی';$('vt').textContent='🗂 وام‌ها';
+$('main').innerHTML=V.length?(view==='mx'?matrix():cards()):'<div class="empty">'+(loans.length?'همه وام‌ها تمام شدند 🎉':'هنوز قسطی ثبت نکردی.')+'</div>';
+const fl=V.filter(fq);let nf=null;
+$('ann').innerHTML=fl.length?fl.map(l=>{const rows=l.due.map((d,i)=>i%12?'':`<div class="fr ${l.pay[i]>=d?'z':''}"><span>${fd(l.day)} ${lab(l.sk+i).m} ${fd(lab(l.sk+i).y)}</span><b>${fm(d)} ت</b></div>`).join('');return `<div class="fl2">${esc(l.name)}</div>${rows}`}).join(''):'<div class="empty">وامی با ماه کارمزد سالانه ثبت نشده.</div>';
+const nx=items.filter(x=>isFee(x.l,x.i))[0];$('feh').textContent=nx?'· بعدی: '+lab(nx.k).m+' '+fd(lab(nx.k).y)+' · '+fm(nx.rem)+' ت':'';
+const tw1=$('tw');
+if(first&&view==='mx'&&tw1){first=false;const c=$('cur'),nmc=tw1.querySelector('.nm');if(c&&nmc){const x=nmc.getBoundingClientRect().left-6-c.getBoundingClientRect().right;tw1.scrollLeft-=x}}
+else{if(tw1)tw1.scrollLeft=sl;window.scrollTo(0,sy)}}
+function reorder(ids){const vs=ids.map(id=>loans.find(l=>l.id==id)).filter(Boolean);const slots=loans.map((l,i)=>vs.includes(l)?i:-1).filter(i=>i>=0);vs.forEach((l,k)=>loans[slots[k]]=l);sv();render()}
+let drg=null;
+document.addEventListener('pointerdown',e=>{const h=e.target.closest('.hdl');if(!h)return;const row=h.closest('[data-rid]');if(!row)return;e.preventDefault();drg=row;row.classList.add('drag');try{h.setPointerCapture(e.pointerId)}catch(x){}});
+document.addEventListener('pointermove',e=>{if(!drg)return;for(const s of [...drg.parentElement.children]){if(s===drg||!s.dataset.rid)continue;const r=s.getBoundingClientRect();if(e.clientY>r.top&&e.clientY<r.bottom){e.clientY<r.top+r.height/2?s.before(drg):s.after(drg);break}}
+if(e.clientY<70)window.scrollBy(0,-10);else if(e.clientY>innerHeight-70)window.scrollBy(0,10)});
+const endDrag=()=>{if(!drg)return;const ids=[...drg.parentElement.children].filter(x=>x.dataset.rid).map(x=>x.dataset.rid);drg.classList.remove('drag');drg=null;reorder(ids)};
+document.addEventListener('pointerup',endDrag);document.addEventListener('pointercancel',endDrag);
+$('srt').onchange=e=>{const k=e.target.value;if(!k)return;const f={day:(a,b)=>a.day-b.day,rem:(a,b)=>remAll(b)-remAll(a),start:(a,b)=>a.sk-b.sk,name:(a,b)=>a.name.localeCompare(b.name,'fa')}[k];loans.sort(f);e.target.value='';sv();render();msg('مرتب شد ✓')};
+document.body.addEventListener('click',e=>{
+$('pal').classList.remove('s');
+const b=e.target.closest('[data-t],[data-e],[data-o],[data-mk],[data-pf],[data-pa],[data-cm],[data-set],[data-sn],[data-cp],[data-upall]');if(!b)return;const d=b.dataset;
+if(d.t){const[id,i]=d.t.split(':'),l=loans.find(x=>x.id==id),prev=l.pay[+i],was=prev>=l.due[+i];l.pay[+i]=was?0:l.due[+i];sv();msg(was?'پرداخت برگشت داده شد':'پرداخت شد ✓ '+l.name,()=>{l.pay[+i]=prev;sv();render()})}
+else if(d.pf){const[id,i]=d.pf.split(':'),l=loans.find(x=>x.id==id);l.pay[+i]=l.due[+i];sv()}
+else if(d.pa){const ch2=[];V.forEach(l=>{const i=selK-l.sk;if(i>=0&&i<L(l)&&l.pay[i]<l.due[i]){ch2.push([l,i,l.pay[i]]);l.pay[i]=l.due[i]}});sv();msg('همه اقساط این ماه پرداخت شد ✓',()=>{ch2.forEach(([l,i,p])=>l.pay[i]=p);sv();render()})}
+else if(d.mk){selK=selK===+d.mk?null:+d.mk}
+else if(d.cm){selK=null}
+else if(d.upall){upAll=!upAll}
+else if(d.set){$('f_late').checked=S.late;$('f_lr').value=fd(S.lr);$('ov2').classList.add('s');return}
+else if(d.sn){restoreText(snaps()[+d.sn].j);return}
+else if(d.cp){try{navigator.clipboard.writeText(d.cp).then(()=>msg('شماره کارت کپی شد'),()=>{})}catch(x){}return}
+else if(d.e){openForm(d.e);return}
+else if(d.o){const id=+d.o;ex.has(id)?ex.delete(id):ex.add(id)}
+render()});
+document.body.addEventListener('change',e=>{const p=e.target.dataset&&e.target.dataset.pi;if(!p)return;const[id,i]=p.split(':');const l=loans.find(x=>x.id==id);l.pay[+i]=Math.min(num(e.target.value),l.due[+i]);sv();render()});
+$('sv2').onclick=()=>{S.late=$('f_late').checked;S.lr=pf($('f_lr').value)||0;st('aghsat_set',JSON.stringify(S));$('ov2').classList.remove('s');render()};
+$('f_m').innerHTML=MN.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+$('f_y').innerHTML=Array.from({length:16},(_,i)=>i-10).map(d=>`<option value="${T.y+d}">${fd(T.y+d)}</option>`).join('');
+$('f_q').onchange=()=>{$('fq').style.display=$('f_q').checked?'':'none';fprev()};$('pm').oninput=fprev;
+function openForm(id){
+editId=id||null;armed=false;$('dl').textContent='🗑 حذف';const l=id?loans.find(x=>x.id==id):null;
+$('mt').textContent=l?'ویرایش قسط':'قسط جدید';$('dl').style.display=l?'':'none';$('pw').style.display=l?'none':'';
+const c=l?l.cfg:{},ca=c.tab==='c';
+$('f_n').value=l?l.name:'';$('f_b').value=l?l.bank:'';$('f_k').value=l&&l.card?fd(cardF(l.card)):'';$('f_d').value=l?l.day:'';$('f_p').value=0;
+$('f_a').value=l?(ca?(l.due[1]||l.due[0]):c.amt):'';$('f_c').value=l?L(l):'';$('f_q').checked=l?(ca?true:!!c.q):false;$('f_s').value=l?(ca?l.due[0]:(c.fee||'')):'';$('fq').style.display=$('f_q').checked?'':'none';$('f_P').value=l&&c.P?c.P:'';$('f_fp').value=l&&c.rate?fd(c.rate):'';
+$('f_m').value=l?l.sk%12+1:T.m;$('f_y').value=l?Math.floor(l.sk/12):T.y;
+fprev();$('ov').classList.add('s')}
+$('add').onclick=e=>{e.stopPropagation();openForm()};
+$('cx').onclick=()=>$('ov').classList.remove('s');
+$('dl').onclick=()=>{if(!armed){armed=true;$('dl').textContent='⚠️ مطمئنی؟';return}loans=loans.filter(x=>x.id!=editId);sv();$('ov').classList.remove('s');render()};
+$('sv').onclick=()=>{
+const c=cfgForm(),name=$('f_n').value.trim(),day=Math.min(31,Math.max(1,num($('f_d').value)||1));
+const due=buildDue(c);
+if(!name||!due.length||!c.amt){msg('نام و مبلغ و تعداد ماه‌ها را کامل وارد کن');return}
+const sk=(+$('f_y').value)*12+(+$('f_m').value)-1,old=editId?loans.find(x=>x.id==editId):null;
+const pc=num($('f_p').value);
+const pay=due.map((d,i)=>old?(old.pay[i]||0):(i<pc?d:0));
+const o={id:old?old.id:Date.now(),name,bank:$('f_b').value.trim(),card:lat($('f_k').value).replace(/\D/g,''),day,sk,due,pay,cfg:c};
+if(old)Object.assign(old,o);else loans.push(o);
+sv();$('ov').classList.remove('s');render()};
+/* ---- تقویم (ICS) ---- */
+function j2g(jy,jm,jd){const jdm=[31,31,31,31,31,31,30,30,30,30,30,29],gdm=[31,28,31,30,31,30,31,31,30,31,30,31];
+jy-=979;jm-=1;jd-=1;let jn=365*jy+Math.floor(jy/33)*8+Math.floor((jy%33+3)/4);for(let i=0;i<jm;i++)jn+=jdm[i];jn+=jd;
+let gn=jn+79,gy=1600+400*Math.floor(gn/146097);gn%=146097;let leap=true;
+if(gn>=36525){gn--;gy+=100*Math.floor(gn/36524);gn%=36524;if(gn>=365)gn++;else leap=false}
+gy+=4*Math.floor(gn/1461);gn%=1461;if(gn>=366){leap=false;gn--;gy+=Math.floor(gn/365);gn%=365}
+let i=0;for(;gn>=gdm[i]+(i===1&&leap?1:0);i++)gn-=gdm[i]+(i===1&&leap?1:0);return[gy,i+1,gn+1]}
+function icsData(){const CR=String.fromCharCode(13,10),p2=n=>String(n).padStart(2,'0'),e2=s=>String(s).replace(/\\/g,'\\\\').replace(/[,;]/g,m=>'\\'+m).replace(/\n/g,'\\n');
+const stamp=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',o=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//aghsat//FA','CALSCALE:GREGORIAN','X-WR-CALNAME:'+e2('اقساط')];
+loans.forEach(l=>l.due.forEach((d,i)=>{const rem=remOf(l,i);if(rem<=0)return;const k=l.sk+i,m=k%12+1,[gy,gm,gd]=j2g(Math.floor(k/12),m,Math.min(l.day,m<=6?31:m<=11?30:29));
+o.push('BEGIN:VEVENT','UID:aghsat-'+String(l.id).replace(/\W/g,'')+'-'+i+'@aghsat','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+gy+p2(gm)+p2(gd),'SUMMARY:'+e2((isFee(l,i)?'کارمزد سالانه ':'قسط ')+l.name+' — '+fm(rem)+' تومان'),'DESCRIPTION:'+e2(l.bank||''),'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+e2('سررسید قسط فردا'),'TRIGGER:-PT15H','END:VALARM','END:VEVENT')}));
+o.push('END:VCALENDAR');return o.join(CR)}
+/* ---- بک‌آپ ---- */
+function bkHtml(){const js=JSON.stringify({v:1,loans,S}).replace(/</g,'\\u003c');
+const rows=loans.map(l=>`<tr><td>${esc(l.name)}</td><td>${esc(l.bank||'')}</td><td>${l.card?fd(cardF(l.card)):''}</td><td>${fd(l.day)}</td><td>${lab(l.sk).m} ${fd(lab(l.sk).y)}</td><td>${fd(l.pay.filter((p,i)=>p>=l.due[i]).length)} / ${fd(L(l))}</td><td>${fm(remAll(l))}</td></tr>`).join('');
+return `<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>بک‌آپ اقساط</title><style>body{font-family:Tahoma,sans-serif;margin:16px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px;text-align:center}th{background:#eee}</style></head><body><h2>بک‌آپ اقساط — ${fd(T.y)}/${fd(T.m)}/${fd(T.d)}</h2><table><tr><th>نام</th><th>بانک</th><th>کارت</th><th>روز سررسید</th><th>شروع</th><th>پرداخت‌شده</th><th>مانده (ت)</th></tr>${rows}</table><p>برای برگرداندن اطلاعات، این فایل را در برنامه با «بازیابی از فایل بک‌آپ» انتخاب کن.</p><script type="application/json" id="aghsat-data">${js}<\/script></body></html>`}
+function bkData(f){
+if(f==='html')return{ext:'html',data:bkHtml()};
+if(f==='json')return{ext:'json',data:JSON.stringify({v:1,loans,S},null,1)};
+if(f==='ics')return{ext:'ics',nm:'reminders',data:icsData()};
+const rows=[];loans.forEach(l=>l.due.forEach((d,i)=>{const k=l.sk+i,b=lab(k),p=Math.min(l.pay[i],d);rows.push([l.name,l.bank||'',b.m,b.y,l.day,isFee(l,i)?'کارمزد سالانه':'قسط',d,p,d-p,p>=d?'پرداخت‌شده':p>0?'ناقص':late(l,i)?'معوق':'در انتظار'])}));
+const head=['وام','بانک','ماه','سال','روز سررسید','نوع','مبلغ','پرداخت‌شده','مانده','وضعیت'];
+if(f==='csv')return{ext:'csv',data:String.fromCharCode(65279)+[head,...rows].map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join(String.fromCharCode(13,10))};
+if(typeof XLSX==='undefined')throw new Error('xlsx');
+const sum=loans.map(l=>[l.name,l.bank||'',l.card||'',l.day,lab(l.sk).m+' '+lab(l.sk).y,L(l),l.pay.filter((p,i)=>p>=l.due[i]).length,remAll(l)]);
+const js=JSON.stringify({v:1,loans,S}),chk=[];for(let i=0;i<js.length;i+=30000)chk.push([js.slice(i,i+30000)]);
+const wb=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([['وام','بانک','شماره کارت','روز سررسید','شروع','تعداد ماه','پرداخت‌شده','مانده (تومان)'],...sum]),'اقساط');
+XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([head,...rows]),'ماهانه');
+XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(chk.length?chk:[['']]),'_data');
+wb.Workbook={Views:[{RTL:true}]};
+return{ext:'xlsx',data:XLSX.write(wb,{bookType:'xlsx',type:'array'})}}
+function snaps(){try{return JSON.parse(ld('aghsat_snaps')||'[]')}catch(e){return[]}}
+function snap(force){try{if(!loans.length)return;const a=snaps(),j=JSON.stringify({v:1,loans,S}),d=T.y+'/'+T.m+'/'+T.d;if(a.length&&a[0].j===j)return;const e={t:Date.now(),d,n:loans.length,j};if(!force&&a.length&&a[0].d===d&&Date.now()-a[0].t<600000)a[0]=e;else a.unshift(e);st('aghsat_snaps',JSON.stringify(a.slice(0,8)));renderSnaps()}catch(e){}}
+function renderSnaps(){const a=snaps(),el=$('sn');if(!el)return;el.innerHTML=a.length?a.map((x,i)=>`<div class="mr" style="grid-template-columns:1fr auto"><span>${fd(x.d)} · ${fd(x.n)} وام</span><button data-sn="${i}">بازیابی</button></div>`).join(''):'هنوز نسخه‌ای ذخیره نشده.'}
+function copyBk(){const t=JSON.stringify({v:1,loans,S});$('pt').value=t;const fb=()=>{$('ov3').classList.remove('s');$('tools').open=true;$('pt').closest('details').open=true;$('pt').select();$('tools').scrollIntoView();msg('متن بک‌آپ در کادر پایین صفحه است؛ کپی کن')};try{navigator.clipboard.writeText(t).then(()=>{msg('متن بک‌آپ کپی شد ✓ در یادداشت یا پیام‌رسان ذخیره کن');$('ov3').classList.remove('s')},fb)}catch(e){fb()}}
+$('bk').onclick=$('bk2').onclick=()=>$('ov3').classList.add('s');$('cx3').onclick=()=>$('ov3').classList.remove('s');
+$('ov3').onclick=e=>{const f=e.target.closest('[data-bf]');if(f)f.dataset.bf==='copy'?copyBk():saveAs(f.dataset.bf)};
+function saveAs(fmt){try{const o=bkData(fmt),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([o.data],{type:'application/octet-stream'}));a.download='aghsat-'+(o.nm||'backup')+'-'+T.y+'-'+T.m+'-'+T.d+'.'+o.ext;document.body.appendChild(a);a.click();a.remove();msg('ذخیره شد ✓');$('ov3').classList.remove('s')}catch(e){msg('ذخیره نشد')}}
+function restoreText(t){try{const m=t.match(/<script type="application\/json" id="aghsat-data">([\s\S]*?)<\/script>/),j=JSON.parse(m?m[1]:t);const ls=Array.isArray(j)?j:j.loans;if(!Array.isArray(ls))throw 0;ls.forEach(mig);snap(true);loans=ls;if(j.S)S=Object.assign(S,j.S);sv();st('aghsat_set',JSON.stringify(S));render();msg(fd(loans.length)+' وام بازیابی شد ✓')}catch(x){msg('محتوای فایل بک‌آپ معتبر نیست')}}
+$('pb').onclick=()=>restoreText($('pt').value);
+$('pc2').onclick=()=>{$('pt').value=JSON.stringify({v:1,loans,S});$('pt').select();msg('متن را کپی کن')};
+async function xlsxData(buf){
+const u=new Uint8Array(buf),dv=new DataView(buf),dec=new TextDecoder();
+let e=u.length-22;while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;if(e<0)throw 1;
+const n=dv.getUint16(e+10,true);let p=dv.getUint32(e+16,true);const ent={};
+for(let i=0;i<n;i++){const m=dv.getUint16(p+10,true),cs=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true);ent[dec.decode(u.subarray(p+46,p+46+nl))]={m,cs,lo};p+=46+nl+xl+cl}
+const rd=async nm=>{const z=ent[nm];if(!z)return '';const o=z.lo+30+dv.getUint16(z.lo+26,true)+dv.getUint16(z.lo+28,true),d=u.subarray(o,o+z.cs);
+if(z.m===0)return dec.decode(d);const ds=new Blob([d]).stream().pipeThrough(new DecompressionStream('deflate-raw'));return dec.decode(await new Response(ds).arrayBuffer())};
+const un=t=>t.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&#(\d+);/g,(x,c)=>String.fromCharCode(+c)).replace(/&#x([0-9a-f]+);/gi,(x,c)=>String.fromCharCode(parseInt(c,16))).replace(/&amp;/g,'&');
+const wbx=await rd('xl/workbook.xml'),names=[...wbx.matchAll(/<sheet [^>]*name="([^"]*)"/g)].map(x=>un(x[1])),ix=names.indexOf('_data');if(ix<0)throw 2;
+const sst=[...(await rd('xl/sharedStrings.xml')).matchAll(/<si>([\s\S]*?)<\/si>/g)].map(x=>un([...x[1].matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map(y=>y[1]).join('')));
+const sh=await rd('xl/worksheets/sheet'+(ix+1)+'.xml'),out=[];
+for(const c of sh.matchAll(/<c [^>]*?(?:\/>|>([\s\S]*?)<\/c>)/g)){const tag=c[0],t=(tag.match(/ t="(\w+)"/)||[])[1],body=c[1]||'';
+if(!/ r="A\d+"/.test(tag))continue;
+if(t==='s'){out.push(sst[+(body.match(/<v>(\d+)<\/v>/)||[])[1]]||'')}
+else if(t==='inlineStr'){out.push(un([...body.matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map(y=>y[1]).join('')))}
+else{const v=body.match(/<v>([\s\S]*?)<\/v>/);out.push(v?un(v[1]):'')}}
+return out.join('')}
+$('fl').onchange=e=>{const f=e.target.files[0];if(!f)return;const inp=e.target,nm=f.name||'',r=new FileReader();
+const done=()=>{try{inp.value=''}catch(x){}};
+r.onerror=()=>{msg('فایل خوانده نشد؛ دوباره انتخابش کن');done()};
+if(/\.csv$/i.test(nm)){msg('CSV قابل بازیابی نیست؛ بک‌آپ HTML یا اکسل یا JSON را انتخاب کن');done();return}
+if(/\.xlsx$/i.test(nm)){r.onload=async()=>{try{restoreText(await xlsxData(r.result))}catch(x){msg('این فایل اکسل بک‌آپ این برنامه نیست')}done()};r.readAsArrayBuffer(f)}
+else{r.onload=()=>{restoreText(r.result);done()};r.readAsText(f)}};
+$('upd').open=ld('aghsat_up')!=='0';$('upd').ontoggle=()=>st('aghsat_up',$('upd').open?'1':'0');
+
+(function(){
+const stand=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const ua=navigator.userAgent,ios=/iphone|ipad|ipod/i.test(ua)&&!window.MSStream,inapp=/Telegram|Instagram|FBAN|FBAV|Line\/|; wv\)|WebView/i.test(ua);
+let dp=null,got=false,act=null;const box=$('inst');
+const show=(t,lbl,fn)=>{$('instT').textContent=t;const g=$('instGo');g.style.display=lbl?'':'none';g.textContent=lbl||'';act=fn||null;box.classList.add('s')};
+const doInst=async()=>{if(dp){dp.prompt();try{await dp.userChoice}catch(e){}dp=null}box.classList.remove('s')};
+async function diagRun(){const L=[],ok=(c,t)=>L.push((c?'✅ ':'❌ ')+t);
+ok(location.protocol==='https:'||location.hostname==='localhost','آدرس امن (https)');
+let mj=null;const ml=document.querySelector('link[rel=manifest]');
+try{const r=await fetch(ml.href);if(!r.ok)throw 0;ok(true,'فایل manifest.webmanifest');mj=await r.json()}catch(e){ok(false,'فایل manifest.webmanifest پیدا نشد (آپلود نشده یا اسمش فرق دارد)')}
+if(mj)for(const ic of mj.icons){try{const r=await fetch(new URL(ic.src,ml.href));ok(r.ok,'آیکن '+ic.src)}catch(e){ok(false,'آیکن '+ic.src+' پیدا نشد')}}
+try{const r=await navigator.serviceWorker.getRegistration();ok(!!r,'سرویس‌ورکر (sw.js)')}catch(e){ok(false,'سرویس‌ورکر در این مرورگر کار نمی‌کند')}
+ok(!inapp,'باز شدن در مرورگر اصلی (نه داخل تلگرام / اینستاگرام)');
+ok(got||ios,'مرورگر اجازه‌ی نصب را اعلام کرده'+(got?'':' (اگر قبلاً نصب کرده‌ای یا مرورگر Chrome نیست، طبیعی است)'));
+$('diag').innerHTML=L.join('<br>')}
+const diagOpen=()=>{$('tools').open=true;diagRun();$('tools').scrollIntoView({behavior:'smooth'})};
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;got=true;if(!stand)show('📲 اپ را روی گوشی نصب کن تا مثل برنامه باز شود','نصب',doInst)});
+window.addEventListener('appinstalled',()=>{box.classList.remove('s');dp=null;msg('نصب شد ✓')});
+$('instGo').onclick=()=>act&&act();
+$('instX').onclick=()=>box.classList.remove('s');
+if(!stand){
+if(ios)setTimeout(()=>show('📲 برای نصب: دکمه اشتراک‌گذاری ⬆︎ را بزن و «Add to Home Screen» را انتخاب کن'),1200);
+else setTimeout(()=>{if(!got)show(inapp?'📲 این صفحه داخل مرورگرِ یک برنامه (تلگرام، اینستاگرام…) باز شده. برای نصب، آن را در Chrome باز کن (منو ⋮ ← Open in browser)':'📲 برای نصب: منوی مرورگر (⋮) ← «Install app» یا «Add to Home screen»','بررسی',diagOpen)},2500)}
+$('instBtn').onclick=()=>{if(stand){msg('برنامه همین‌الان نصب است ✓');return}if(dp){doInst();return}diagOpen()};
+if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+applyPal();render();renderSnaps();
+</script>
+</body>
+</html>
